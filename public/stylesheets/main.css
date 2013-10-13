@@ -1,0 +1,34 @@
+.card {
+	width: 250px;
+	padding: 10px;
+	border: 5px solid gray;
+	margin: 10px;
+}
+
+.question {
+	background: green;
+}
+
+._1 {
+	color: blue;
+}
+
+._2 {
+	color: red;
+}
+
+._3 {
+	color: black;
+}
+
+._4 {
+	color: orange;
+}
+
+._5 {
+	color: pink;
+}
+
+._6 {
+	color: white;
+}

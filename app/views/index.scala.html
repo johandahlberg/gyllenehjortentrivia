@@ -1,0 +1,13 @@
+@(card: controllers.Application.Card)
+
+@main("Gyllene Hjorten Trivia") {
+
+          
+	<div class="card">
+		@for(question <- card.questions) {
+			<div class="question _@question.category">@question.question</div>
+		}
+	</div>
+		
+
+}
