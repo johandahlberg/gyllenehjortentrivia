@@ -1,34 +1,114 @@
-.card {
-	width: 250px;
+/* Twitter bootstrap stuff */
+html,body {
+	height: 100%;
+	/* The html and body elements cannot have any padding or margin. */
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by it's height */
+	margin: 0 auto -60px;
+}
+
+/* Set the fixed height of the footer here */
+#push,#footer {
+	height: 60px;
+}
+
+#footer {
+	
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media ( max-width : 767px) {
+	#footer {
+		margin-left: -20px;
+		margin-right: -20px;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+}
+
+/* Custom styles */
+.gameControls {
+	float: left; 
+	width:  100px;
+	border: 15px solid navy;
 	padding: 10px;
-	border: 5px solid gray;
-	margin: 10px;
+	margin: 20px;
+	background: #FDFDF0;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
+	-moz-box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
+	box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
+}
+
+.card {
+	float: left;
+	width:  400px;
+	border: 15px solid navy;
+	padding: 10px;
+	background: #FDFDF0;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	-webkit-box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
+	-moz-box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
+	box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
+}
+
+.invisible {
+	display: none;
+}
+
+.cardContainer {
+	padding: 4px;
+	width: 350px;
+	heigth: 100px;
+	clear: both;
 }
 
 .question {
-	background: green;
+	
+}
+
+.category {
+	float: left;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	text-align: center;
+	text: #FDFDF0;
+	border-radius: 50%;
+	width: 50px;
+	height: 40px;
 }
 
 ._1 {
-	color: blue;
+	background: blue;
 }
 
 ._2 {
-	color: red;
+	background: red;
 }
 
 ._3 {
-	color: black;
+	background: black;
 }
 
 ._4 {
-	color: orange;
+	background: orange;
 }
 
 ._5 {
-	color: pink;
+	background: pink;
 }
 
 ._6 {
-	color: white;
+	background: navy;
 }

@@ -30,7 +30,7 @@ object Application extends Controller {
         val result = questions(random_index);
         result
       }
-    Card(questionsFromEachKey.toList)
+    Card(questionsFromEachKey.toList.sortBy(f => f.category))
   }
 
   def groupQuestionsByCategory(questions: List[Question]): Map[Int, List[Question]] = {

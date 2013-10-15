@@ -2,10 +2,21 @@
 
 @main("Gyllene Hjorten Trivia") {
 
+	<div class="gameControls">
+		Control placeholder
+	</div>
           
 	<div class="card">
 		@for(question <- card.questions) {
-			<div class="question _@question.category">@question.question</div>
+			<div class="cardContainer">
+				<div class="category _@question.category">@question.category</div>
+				<div class="question">					
+					@question.question
+				</div>
+				<div class="answer invisible"">				
+					@question.answer				
+				</div>
+			</div>
 		}
 	</div>
 		
