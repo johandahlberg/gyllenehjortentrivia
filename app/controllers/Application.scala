@@ -4,10 +4,15 @@ import play.api._
 import play.api.mvc._
 import java.net.URL
 import scala.util.Random
+import play.api.libs.json.Json
 
+/**
+ * @TODO Clean up all unused code here.
+ */
 object Application extends Controller {
 
-  case class Question(category: Int, question: String, answer: String)
+  implicit val questionFormat = Json.format[Question]
+  case class Question(category: Int, question: String, answer: String, tags: Set[String] = Set.empty)
   case class Card(questions: List[Question])
 
   def index = Action {
@@ -19,6 +24,43 @@ object Application extends Controller {
     val card = createQuestionsCard(groupedAnswersAndQuestions)
 
     Ok(views.html.index(card))
+  }
+
+  /**
+   * Returns a question in the specified category (any if all),
+   * and matching at least one of the tags.
+   */
+  def question(category: String, tags: String) = Action {
+
+    val spreadSheets = getSpreadSheets()
+    val answersAndQuestions = getQuestionsAndAnswers(spreadSheets)
+
+    val tagSet = tags.split(";").toSet
+
+    // Filter by category and tag
+    val questionFromCategory =
+      if (category == "all")
+        answersAndQuestions
+      else
+        answersAndQuestions.filter(p => p.category.toString == category)
+
+    val filteredBytag =
+      if (tags.isEmpty())
+        questionFromCategory
+      else
+        questionFromCategory.filter(p => !tagSet.intersect(p.tags).isEmpty)
+        
+    
+    // Select one random question matching query
+    val rand = new Random(System.currentTimeMillis())
+    val randomIndex = rand.nextInt(filteredBytag.length)    
+    val selectedQuestion = filteredBytag(randomIndex)
+
+    if (filteredBytag.isEmpty)
+      BadRequest("No question matching request")
+    else
+      Ok(Json.toJson(selectedQuestion))
+
   }
 
   def createQuestionsCard(categoriesAndQuestions: Map[Int, List[Question]]): Card = {
@@ -45,7 +87,8 @@ object Application extends Controller {
         if line.split("\\t").size > 5
       ) yield {
         val splitString = line.split("\\t").toList
-        Question(splitString(1).toInt, splitString(3), splitString(4))
+        val tags = splitString(7).split("\\s").toSet
+        Question(splitString(1).toInt, splitString(3), splitString(4), tags)
       }
     questionList
   }
