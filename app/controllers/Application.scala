@@ -30,10 +30,10 @@ object Application extends Controller {
    * Returns a question in the specified category (any if all),
    * and matching at least one of the tags.
    * If multiple tags, separate by ";"
-   * 
+   *
    * Here's an example query which is deparsed by this function:
    * http://localhost:9000/question?category=2&tag=1;7
-   * 
+   *
    * To get all:
    * http://localhost:9000/question?category=all
    */
@@ -57,15 +57,15 @@ object Application extends Controller {
       else
         questionFromCategory.filter(p => !tagSet.intersect(p.tags).isEmpty)
 
-    // Select one random question matching query
-    val rand = new Random(System.currentTimeMillis())
-    val randomIndex = rand.nextInt(filteredBytag.length)
-    val selectedQuestion = filteredBytag(randomIndex)
-
     if (filteredBytag.isEmpty)
       BadRequest("No question matching request")
-    else
+    else {
+      // Select one random question matching query
+      val rand = new Random(System.currentTimeMillis())
+      val randomIndex = rand.nextInt(filteredBytag.length)
+      val selectedQuestion = filteredBytag(randomIndex)
       Ok(Json.toJson(selectedQuestion))
+    }
 
   }
 
