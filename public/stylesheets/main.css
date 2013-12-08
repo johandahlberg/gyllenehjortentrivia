@@ -1,114 +1,49 @@
-/* Twitter bootstrap stuff */
-html,body {
-	height: 100%;
-	/* The html and body elements cannot have any padding or margin. */
+body {
+	background-color: grey;
+	margin: 0px;
+	padding: 0px;
 }
 
-/* Wrapper for page content to push down footer */
-#wrap {
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	/* Negative indent footer by it's height */
-	margin: 0 auto -60px;
+#container {
+	background-color: white;
+	width: 400px;
+	margin: 0px auto 0px auto;
+	padding: 5px;
 }
 
-/* Set the fixed height of the footer here */
-#push,#footer {
-	height: 60px;
+#categories {
+	text-align: center;
 }
 
-#footer {
-	
+#container h1 {
+	text-align: left;
 }
 
-/* Lastly, apply responsive CSS fixes as necessary */
-@media ( max-width : 767px) {
-	#footer {
-		margin-left: -20px;
-		margin-right: -20px;
-		padding-left: 20px;
-		padding-right: 20px;
-	}
+#infolink {
+	float: right;
+	vertical-align: middle;
 }
 
-/* Custom styles */
-.gameControls {
-	float: left; 
-	width:  100px;
-	border: 15px solid navy;
-	padding: 10px;
-	margin: 20px;
-	background: #FDFDF0;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	-webkit-box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
-	-moz-box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
-	box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
+#cards {
+	width: 100%;
+	height: 200px;
 }
 
 .card {
-	float: left;
-	width:  400px;
-	border: 15px solid navy;
-	padding: 10px;
-	background: #FDFDF0;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	-webkit-box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
-	-moz-box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
-	box-shadow: 7px 7px 10px rgba(50, 50, 50, 0.61);
-}
-
-.invisible {
+	width: 100%;
+	text-align: center;
+	vertical-align: middle;
 	display: none;
 }
 
-.cardContainer {
-	padding: 4px;
-	width: 350px;
-	heigth: 100px;
-	clear: both;
+.card p {
+	vertical-align: middle;
 }
 
-.question {
-	
+#blocklink {
+	display: block;
 }
 
-.category {
-	float: left;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	text-align: center;
-	text: #FDFDF0;
-	border-radius: 50%;
-	width: 50px;
-	height: 40px;
-}
-
-._1 {
-	background: blue;
-}
-
-._2 {
-	background: red;
-}
-
-._3 {
-	background: black;
-}
-
-._4 {
-	background: orange;
-}
-
-._5 {
-	background: pink;
-}
-
-._6 {
-	background: navy;
+#tags {
+	display: none;
 }

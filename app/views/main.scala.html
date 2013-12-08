@@ -1,37 +1,53 @@
-@(title: String)(content: Html)
+@* main Template File *@
+@(param: Any)
 
-<!DOCTYPE html>
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-    <head>
-        <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap-responsive.css")">
-        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/bootstrap.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.at("javascripts/bootstrap.js")" type="text/javascript"></script>
-        <script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>
-    </head>
-    <body>            
-        <!-- Part 1: Wrap all page content here -->
-    	<div id="wrap">
-	      	<!-- Begin page content -->	      	
-	      	<div class="container">
-	      	
-	      	<div class="page-header">
-          		<h1>Gyllene Hjorten trivia</h1>
-        	</div>	      		      	
-	        	@content
-	        </div>
-	        <div id="push"></div>        
-      	</div>
-      	
-
-    <div id="footer">
-      <div class="container">
-        <p class="muted credit">Ett litet trivia spel om Erborigien, sagan och föreningen Gyllene Hjorten.</p>
-      </div>
-    </div>    
-    </body>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+		<title>Gyllene Hjorten: Frågespel</title>
+		<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+		<script src="@routes.Assets.at("javascripts/main.js")" type="text/javascript"></script>
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+	</head>
+	<body onload="initialize()">
+		<div id="container">
+			<div id="header">
+				<a id="infolink" href="javascript:showInfo()">i</a>
+				<h1>GH Frågespel</h1>
+			</div>
+			<div id="categories">
+				<!--
+				<a href="javascript:newQuestion(1)">Historia</a>
+				<a href="javascript:newQuestion(2)">Historia</a>
+				<a href="javascript:newQuestion(3)">Historia</a>
+				<a href="javascript:newQuestion(4)">Historia</a>
+				<a href="javascript:newQuestion(5)">Historia</a>
+				<a href="javascript:newQuestion(6)">Historia</a>
+				-->
+			</div>
+			<div id="cards">
+				<div id="question" class="card">
+					<p id="questiontext"></p>
+					<a id="showanswer" href="javascript:changeCard('answer')">Visa svaret</a>
+				</div>
+				<div id="answer" class="card">
+					<p id="answertext"></p>
+					<a id="readmore" class="blocklink">Läs mer</a>
+					<a href="javascript:changeCard('question')" class="blocklink">Visa frågan</a>
+				</div>
+				<div id="info" class="card">
+					<p>
+						Det här är ett mysigt litet frågespel från föreningen <a href="http://gyllenehjorten.se">Gyllene Hjorten</a>.
+					</p>
+					<a href="javascript:closeInfo()" class="blocklink">Stäng</a>
+				</div>
+				<div id="message" class="card">
+					<p id="messagetext"></p>
+			</div>
+			<a href="javascript:toggleTags()">Taggar</a>
+			<div id="tags"></div>
+		</div>
+	</body>
 </html>
