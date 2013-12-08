@@ -4,7 +4,9 @@
 
 # Home page
 GET   /               controllers.Application.index
-GET   /question       controllers.Application.question(category: String ?= "all", tag: String ?= "")
+GET   /questions      controllers.Application.questions
+GET   /tags           controllers.Application.tags
+GET   /initalizegame           controllers.Application.initializeGame
 
 # Map static resources from the /public folder to the /assets URL path
 GET   /assets/*file   controllers.Assets.at(path="/public", file)

@@ -6,85 +6,59 @@ import java.net.URL
 import scala.util.Random
 import play.api.libs.json.Json
 
-/**
- * @TODO Clean up all unused code here.
- */
 object Application extends Controller {
 
   implicit val questionFormat = Json.format[Question]
-  case class Question(category: Int, question: String, answer: String, tags: Set[String] = Set.empty)
-  case class Card(questions: List[Question])
-
+  case class Question(category: String, question: String, answer: String, tags: Set[String] = Set.empty, link: String = "", used: Boolean = false)
+  
+  implicit val gameFormat = Json.format[GameInitializer]
+  case class GameInitializer(questions: List[Question], categories: Set[String], tags: Set[String])
+  
+  
   def index = Action {
+    Ok(views.html.index("Hello world!"))
+  }
 
+  def getQuestionsFromSpreadsheet(spreadsheet: List[String]): List[Question] = {
     val spreadSheets = getSpreadSheets()
-    val answersAndQuestions = getQuestionsAndAnswers(spreadSheets)
-    val groupedAnswersAndQuestions = groupQuestionsByCategory(answersAndQuestions)
-
-    val card = createQuestionsCard(groupedAnswersAndQuestions)
-
-    Ok(views.html.index(card))
+    getQuestionsAndAnswers(spreadSheets)
   }
 
   /**
-   * Returns a question in the specified category (any if all),
-   * and matching at least one of the tags.
-   * If multiple tags, separate by ";"
-   *
-   * Here's an example query which is deparsed by this function:
-   * http://localhost:9000/question?category=2&tag=1;7
-   *
-   * To get all:
-   * http://localhost:9000/question?category=all
+   * Get all the stuff necessary to run the game
    */
-  def question(category: String, tags: String) = Action {
-
-    val spreadSheets = getSpreadSheets()
-    val answersAndQuestions = getQuestionsAndAnswers(spreadSheets)
-
-    val tagSet = tags.split(";").toSet
-
-    // Filter by category and tag
-    val questionFromCategory =
-      if (category == "all")
-        answersAndQuestions
-      else
-        answersAndQuestions.filter(p => p.category.toString == category)
-
-    val filteredBytag =
-      if (tags.isEmpty())
-        questionFromCategory
-      else
-        questionFromCategory.filter(p => !tagSet.intersect(p.tags).isEmpty)
-
-    if (filteredBytag.isEmpty)
-      BadRequest("No question matching request")
-    else {
-      // Select one random question matching query
-      val rand = new Random(System.currentTimeMillis())
-      val randomIndex = rand.nextInt(filteredBytag.length)
-      val selectedQuestion = filteredBytag(randomIndex)
-      Ok(Json.toJson(selectedQuestion))
-    }
-
+  def initializeGame = Action {
+    val answersAndQuestions = getQuestionsAndAnswers(getSpreadSheets())
+    val uniqueTags = answersAndQuestions.map(x => x.tags).foldLeft(Set[String]())((x, y) => x ++ y)
+    val categories = answersAndQuestions.map(x => x.category).foldLeft(Set[String]())((x, y) => x + y)
+    val everything = GameInitializer(answersAndQuestions, categories, uniqueTags)
+    Ok(Json.toJson(everything))
   }
 
-  def createQuestionsCard(categoriesAndQuestions: Map[Int, List[Question]]): Card = {
-    val questionsFromEachKey =
-      for (key <- categoriesAndQuestions.keys) yield {
-        val questions = categoriesAndQuestions(key)
-        val rand = new Random(System.currentTimeMillis());
-        val random_index = rand.nextInt(questions.length);
-        val result = questions(random_index);
-        result
-      }
-    Card(questionsFromEachKey.toList.sortBy(f => f.category))
+  
+  /**
+   * Returns all questions by e.g:
+   * http://localhost:9000/questions
+   */
+  def questions = Action {
+    val answersAndQuestions = getQuestionsAndAnswers(getSpreadSheets())
+    val randomlyOrdered = Random.shuffle(answersAndQuestions)
+    Ok(Json.toJson(randomlyOrdered))
   }
 
-  def groupQuestionsByCategory(questions: List[Question]): Map[Int, List[Question]] = {
-    questions.groupBy(f => f.category)
+  /**
+   * Returns all questions by e.g:
+   * http://localhost:9000/tags
+   */
+  def tags = Action {
+    val answersAndQuestions = getQuestionsAndAnswers(getSpreadSheets())
+    val uniqueTags = answersAndQuestions.map(x => x.tags).foldLeft(Set[String]())((x, y) => x ++ y)
+    Ok(Json.toJson(uniqueTags))
   }
 
+  /**
+   *   Formats the spreadsheet rows into questions. This is somewhat hack-ish at the moment.
+   */
   def getQuestionsAndAnswers(list: List[String]): List[Question] = {
 
     val questionList =
@@ -93,8 +67,8 @@ object Application extends Controller {
         if line.split("\\t").size > 5
       ) yield {
         val splitString = line.split("\\t").toList
-        val tags = splitString(7).split("\\s").toSet
-        Question(splitString(1).toInt, splitString(3), splitString(4), tags)
+        val tags = splitString(7).split(",").map(x => x.trim).filter(x => x != "").toSet
+        Question(splitString(1), splitString(3), splitString(4), tags)
       }
     questionList
   }
@@ -102,7 +76,7 @@ object Application extends Controller {
   def getSpreadSheets(): List[String] = {
 
     val sheet = scala.io.Source.fromURL(
-      new URL("https://docs.google.com/spreadsheet/pub?key=0AgX8h-A0AgGIdHl1dHZXU1BfVzM0RUdOYzhjd0dZLVE&single=true&gid=0&output=txt")).getLines
+      new URL("https://docs.google.com/spreadsheet/pub?key=0AgX8h-A0AgGIdGNMY1d4cjJNY2VTVFZIYmhrcGtJZUE&single=true&gid=1&output=txt")).getLines
 
     // Hack solution to demand values in each required field
     // Also skips the header by using tail  
