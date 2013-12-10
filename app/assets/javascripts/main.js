@@ -1,12 +1,9 @@
 var JSON_URL = "initalizegame";
 var GH_DOKI_URL = "http://gyllenehjorten.se/dokuwiki/doku.php?id=";
 
-var strCurrentCard = "";
+var strCurrentCard = "message";
 var strOldCard;
 var blnOpenCard = false;
-
-var blnTag = new Array();
-var blnAll = true;
 
 var strTags;
 var strCategories;
@@ -17,7 +14,7 @@ var objQuestions;
 //
 
 $(function() {
-		
+			
 	//Hämta alla taggar, kategorier och frågor.
 	$.getJSON(JSON_URL)
 		.done(function(data) {
@@ -28,34 +25,30 @@ $(function() {
 			objQuestions = data.questions;
 			
 			//Skriv ut kategorierna, och gör dem klickbara.
-			$("#categories").append(linkList(strCategories, "category"));
-			$(".category").attr("id", function(index) { return index; })
-			              .addClass(function(index) { return "category" + index; })
-			              .click(function() { newQuestion($(this).attr("id")); });
+			$("#category-list").append(categoryList());
+			$(".category").click(function() { newQuestion($(this).attr("name")); });
 			
 			//Skriv ut taggarna, och gör dem klickbara.
-			$("#tags .cardmain").append(linkList(strTags, "tag"));
-			$(".tag").attr("id", function(index) { return index; })
-			         .addClass("unchecked")
-			         .click(function() { toggleTag(this); });
+			$("#tag-list").append(tagList());
+			$(".tag").click(function() { toggleTag(this); });
 			
 			//Fixa alla-taggen
 			$("#alltags").click(checkAllTags);
 			
 			//Evenhandler för diverse knappar.
 			$(".close").click(closeCard);
+			$("#random").click(function() { newQuestion(-1); });
 			$("#showtags").click(function() { openCard("tags"); });
 			$("#showinfo").click(function() { openCard("info"); });
 			$("#showdifficulty").click(function() { openCard("difficulty"); });
-			$("#showquestion").click(function() { changeCard("question"); });
-			$("#showanswer").click(function() { changeCard("answer"); });
+			$("#question").click(function() { changeCard("answer"); });
+			$("#answer").click(function() { changeCard("question"); });
 			
 			//Hämta en ny fråga av slumpvis utvald kategori.
 			newQuestion(-1);
 			
-			//Visa hela härligheten.
-			$("#loadingscreen").hide();
-			$("#container").show();
+			//Visa härligheten.
+			$("#controls").css("visibility", "visible");
 			
 		})
 		.fail(function() {
@@ -67,14 +60,26 @@ $(function() {
 
 });
 
-function linkList(strLinks, strClass) {
+function categoryList() {
 	
 		//Skapa HTML-koden.
 		var strHTML = "";
-		for(var i=0; i<strLinks.length; i++) {
-			strHTML += "<a class='" + strClass + "'>" + strLinks[i] + "</a> ";
-		}
-		
+		for(var i=0; i<strCategories.length; i++)
+			strHTML += "<button name='" + i + "' type='button' class='category btn btn-" + i + "'>" 
+			         + strCategories[i].charAt(0).toUpperCase() + "</button>";
+
+		//Returnera den
+		return strHTML;
+}
+
+function tagList() {
+	
+		//Skapa HTML-koden.
+		var strHTML = "";
+		for(var i=0; i<strTags.length; i++)
+			strHTML += "<button type='button' name='" + strTags[i] + "' class='tag btn btn-default'>" 
+					 + strTags[i] + "</button> ";
+
 		//Returnera den
 		return strHTML;
 }
@@ -86,7 +91,7 @@ function linkList(strLinks, strClass) {
 function newQuestion(intCategory) {
 	
 	//Om vi ska slumpa en fråga.
-	if(intCategory < 0 || intCategory >= strCategories.length)
+	if(intCategory < 0)
 		intCategory = Math.floor(Math.random()*strCategories.length);
 		
 	//Hämta namnet på kategorin.
@@ -98,25 +103,26 @@ function newQuestion(intCategory) {
 	if(objQuestion == null) {
 
 		//Fanns ingen fråga alls - visa ett meddelande.
-		$("#message .cardmain").html("Det finns inga frågor med denna tag i denna kategori.");
-		changeCard("message");
+		showMessage("Oj då!", "Det finns ingen fråga av den typ du vill ha. Testa att välja fler kategorier eller nivåer.");
 		
 	}
 	else {
 		
 		//Fanns en fråga - skriv ut den.
-		$("#question .cardmain").html(objQuestion.question);
-		$("#answer .cardmain").html(objQuestion.answer);
-		$(".currentcategory").html(objQuestion.category)
-							 .removeClass(allCategoryClasses())
-		                     .addClass("category" + intCategory);
-		if(objQuestion.link == "") {
+		$("#question-text").html(objQuestion.question);
+		$("#answer-text").html(objQuestion.answer);
+		$(".currentcategory").html(objQuestion.category);
+		$("#question").add("#answer")
+					  .removeClass(allPanelClasses())
+		              .addClass("panel-" + intCategory);
+		                     
+		/*if(objQuestion.link == "") {
 			$("#readmore").css("display", "none");
 		}
 		else {
 			$("#readmore").attr("href", GH_DOKI_URL + objQuestion.link)
 			              .css("display", "none");
-		}
+		}*/
 		
 		//Nu är frågan använd.
 		objQuestion.used = true;
@@ -155,25 +161,27 @@ function isAllowed(objQuestion, strCategory) {
 
 function hasCategory(objQuestion) {
 	
-	//Om vi markerat alla så är det lugnt.
-	if(blnAll)
+	var strChecked = getCheckedTags();
+	
+	//Om inget är ikryssat så är allt OK.
+	if(strChecked.length == 0)
 		return true;
 	
 	//Kolla om någon av de ibockade taggarna finns i frågan.
-	for(var i=0; i<blnTag.length; i++)
-		if(blnTag[i] && objQuestion.tags.indexOf(strTags[i]) != -1)
+	for(var i=0; i<strChecked.length; i++)
+		if(objQuestion.tags.indexOf(strChecked[i]) != -1)
 			return true;
 	
 	//Vi hittade ingen matchning.
 	return false;
 }
 
-function allCategoryClasses() {
+function allPanelClasses() {
 
 	//Lista alla kategoriklasserna (category0 category1...)
 	var strClasses = ""
 	for(var i=0; i<strCategories.length; i++)
-		strClasses += " category" + i;
+		strClasses += " panel-" + i;
 		
 	return strClasses;
 	
@@ -182,25 +190,6 @@ function allCategoryClasses() {
 //
 // VÄXLA MELLAN KORT
 //
-
-function openCard(strCard) {
-	
-	//Öppna kortet (om inget är öppet) och kom ihåg vad vi ska byta tillbaka till.
-	if(!blnOpenCard) {
-		strOldCard = strCurrentCard;
-		changeCard(strCard);
-		blnOpenCard = true;
-	}
-	
-}
-
-function closeCard() {
-	
-	//Stäng kortet om något kort är öppet.
-	if(blnOpenCard)
-		changeCard(strOldCard);
-	
-}
 
 function changeCard(strCard) {
 	
@@ -220,6 +209,32 @@ function changeCard(strCard) {
 	
 }
 
+function openCard(strCard) {
+	
+	//Om det inte redan är ett öppet kort ska vi byta tillbaka till nuvarande.
+	if(!blnOpenCard)
+		strOldCard = strCurrentCard;
+	
+	//Byt kort och kom ihåg att det är ett öppnat.
+	changeCard(strCard);
+	blnOpenCard = true;
+	
+}
+
+function closeCard() {
+	
+	//Stäng kortet om något kort är öppet.
+	if(blnOpenCard)
+		changeCard(strOldCard);
+	
+}
+
+function showMessage(strHeading, strText) {
+	$("#message-heading").html(strHeading);
+	$("#message-text").html(strText);
+	changeCard("message");
+}
+
 //
 // BOCKA I OCH UR TAGGAR
 //
@@ -227,56 +242,39 @@ function changeCard(strCard) {
 function checkAllTags() {
 	
 	//Bocka ur alla taggar.
-	$(".tag").addClass("unchecked")
-	         .removeClass("checked");
-	             
-	//Bocka i alternativet alla.
-	$("#alltags").addClass("checked")
-	             .removeClass("unchecked");
-	             
-	//Ändra värdena.
-	blnTag = new Array();
-	blnAll = true;
+	$(".tag").removeClass("active");
 		
 }
 
 function toggleTag(objTag) {
 	
-	//Ängra utseendet.
-	$(objTag).toggleClass("checked unchecked");
-	
-	//Bocka ur alla.
-	$("#alltags").addClass("unchecked")
-	             .removeClass("checked");
-		       	  
-	//Lägg till/ta bort från listan.   
-	blnTag[$(objTag).attr("id")] = $(objTag).hasClass("checked");
-	blnAll = false;
-	
-	//Om det inte finns någon tag bockar vi i alla.
-	if(noTags())
-		checkAllTags();	
+	//Bocka i/ur alla-taggen.
+	if($(objTag).hasClass("active")) {
+		if(getCheckedTags().length == 1)
+			$("#alltags").addClass("active");
+	}
+	else {
+		$("#alltags").removeClass("active");
+	}
+			
 }
 
-function noTags() {
+function getCheckedTags() {
 
-	//Returnera falskt om någon tagg är ibockad...
-	for(var i=0; i<blnTag.length; i++)
-		if(blnTag[i]) return false;
+	//Lagra alla namn i en vektor.
+	var strCheckedTags = new Array();
+	$(".tag.active").each(function() {
+		strCheckedTags.push($(this).attr("name"));
+	});
 	
-	//...annars falskt.
-	return true;
+	//Returnera.
+	return strCheckedTags;
 	
 }
 
 //I debuggsyfte.
 function printTags() {
-	var t = "";
-	if(blnAll) t = "Alla ";
-	for(var i=0; i<blnTag.length; i++)
-		if(blnTag[i])
-			t += strTags[i] + " ";
 
-	console.log(t);
+	console.log(getCheckedTags().toString());
 	
 }

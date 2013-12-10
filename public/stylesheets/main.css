@@ -1,169 +1,64 @@
 body {
-	background-color: #FEFEFC;
-	margin: 0px;
-	padding: 0px;
-	
-	font-size: 14px;
-	font-weight: bold;
-	font-family: verdana, helvetica, arial, sans-serif;
+	background-color: #fafafa !important;
 	text-align: center;
 }
 
-a {
-	color: black;
-	text-decoration: underline;
+html, body {
+	height: 100%;
 }
 
-#container {
-	display: none;
+#game {
 	max-width: 840px;
+	min-height: 100%; 
 	margin: 0px auto 0px auto;
 	padding: 10px;
 }
 
-.section {
-	margin: 10px 0px;
+#main {
+  overflow: auto;
+  padding-bottom: 30px; 
+ }
+
+#footer {
+  position: relative;
+  margin: -40px 0px 0px 0px;
+  height: 40px;
+  clear: both;
+  padding: 0px;
+} 
+
+.panel {
+	display: none;
+	box-shadow: 3px 3px 6px 2px #CCCCCC !important;
 }
 
-.blocklink, .blocktext, .category, .tag {
-	
-	border-width: 0px;
-	border-style: solid;
-	border-radius: 5px;	
-	
-	box-shadow: 2px 2px 4px 0px #CCCCCC;
-	
-	color: #666666;
-	background-color: #CCCCCC;
-	border-color: #666666;
+.panel a, .panel a:hover {
+	color: black;
+	text-decoration: underline;	
+}
 
-	padding: 5px;
-	margin: 3px;
-
-	white-space: nowrap;
-	text-decoration: none;
-	
+#question, #answer {
 	cursor: pointer;
-
 }
 
-.blocktext {
-	cursor: auto;	
-}
-
-.blocklink:active, .category:active, .tag:active {
-	position: relative;
-	top: 2px;
-	left: 2px;
-	box-shadow: 0px 0px 0px 0px #FFFFFF;
-}
-
-#categories, #options, #tags .cardmain {
+#tag-list {
 	line-height: 2.7;
 }
 
-.category {
-}
-
-.category0 {
-	color: #FFFFE6;
-	background-color: #FFFF00;
-	border-color: #FFFFE6;
-}
-
-.category1 {
-	color: #FFE0B2;
-	background-color: #FF9900;
-	border-color: #FFE0B2;
-}
-
-.category2 {
-	color: #FFD1F0;
-	background-color: #FF66CC;
-	border-color: #FFD1F0;
-}
-
-.category3 {
-	color: #C2D1FF;
-	background-color: #3366FF;
-	border-color: #C2D1FF;
-}
-
-.category4 {
-	color: #D1FFC2;
-	background-color: #66FF33;
-	border-color: #D1FFC2;
-}
-
-.category5 {
-	color: #E0D1B2;
-	background-color: #996600;
-	border-color: #E0D1B2;
-}
-
-#cards {
-	width: 100%;
-}
-
-.card {
-
-	width: 100%;
-	display: none;
-	
-	background-color: #FFFFFE;
-		
-	border-width: 1px;
-	border-style: solid;
-	border-radius: 5px;	
-	border-color: #CCCCCC;
-	
-	box-shadow: 4px 4px 8px 2px #CCCCCC;
-		
-	vertical-align: middle;
-}
-
-.cardheader {
-	height: 37px;
-	margin: 4px 4px 30px 4px;
-}
-	
-.cardfooter {
-	height: 37px;
-	margin: 30px 4px 4px 4px;
-}
-
-.left {
-	float: left;
-}
-
-.right {
-	float: right;
-	margin-right: 5px;
-}
-
-#blocklink {
+#message {
 	display: block;
 }
 
-#tags {
-	display: none;
-}
-
-.checked {
-	color: #CCCCCC;
-	background-color: #666666;
-	border-color: #CCCCCC;
-}
-
-.unchecked {
+#controls {
+	visibility: hidden;
 }
 
 #footer {
 	font-size: 12px;
-	font-weight: normal;
-	color: #CCCCA3;
+	color: #CCCCCC;
 }
 
 #footer a {
-	color: #CCCCA3;
+	color: #CCCCCC;
+	text-decoration: underline;
 }
