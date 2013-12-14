@@ -6,14 +6,29 @@ import java.net.URL
 import scala.util.Random
 import play.api.libs.json.Json
 import scala.io.Codec
+import scala.collection.SortedSet
 
 object Application extends Controller {
+
+  val categoryOrderingMap = Map(
+    "Historia" -> 0,
+    "Föreningen Gyllene Hjorten" -> 1,
+    "Nutidsorientering" -> 2,
+    "Religion och magi" -> 3,
+    "Geografi" -> 4,
+    "Kultur" -> 5)
+
+  case class Category(s: String) extends Comparable[Category] {
+    def compareTo(that: Category): Int = {
+      categoryOrderingMap(that.s).compareTo(categoryOrderingMap(this.s))
+    }
+  }
 
   implicit val questionFormat = Json.format[Question]
   case class Question(category: String, question: String, answer: String, tags: Set[String] = Set.empty, link: String = "", used: Boolean = false)
 
   implicit val gameFormat = Json.format[GameInitializer]
-  case class GameInitializer(questions: List[Question], categories: Set[String], tags: Set[String])
+  case class GameInitializer(questions: List[Question], categories: List[String], tags: List[String])
 
   def index = Action {
     Ok(views.html.index("Hello world!"))
@@ -29,8 +44,8 @@ object Application extends Controller {
    */
   def initializeGame = Action {
     val answersAndQuestions = getQuestionsAndAnswers(getSpreadSheets())
-    val uniqueTags = answersAndQuestions.map(x => x.tags).foldLeft(Set[String]())((x, y) => x ++ y)
-    val categories = answersAndQuestions.map(x => x.category).foldLeft(Set[String]())((x, y) => x + y)
+    val uniqueTags = answersAndQuestions.map(x => x.tags).foldLeft(SortedSet[String]())((x, y) => x ++ y).toList
+    val categories = answersAndQuestions.map(x => Category(x.category)).foldLeft(SortedSet[Category]())((x, y) => x + y).toList.map(x => x.s).reverse
     val everything = GameInitializer(answersAndQuestions, categories, uniqueTags)
     Ok(Json.toJson(everything))
   }
@@ -51,7 +66,7 @@ object Application extends Controller {
    */
   def tags = Action {
     val answersAndQuestions = getQuestionsAndAnswers(getSpreadSheets())
-    val uniqueTags = answersAndQuestions.map(x => x.tags).foldLeft(Set[String]())((x, y) => x ++ y)
+    val uniqueTags = answersAndQuestions.map(x => x.tags).foldLeft(SortedSet[String]())((x, y) => x ++ y).toList
     Ok(Json.toJson(uniqueTags))
   }
 
