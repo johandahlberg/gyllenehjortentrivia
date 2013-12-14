@@ -10,11 +10,14 @@ object Application extends Controller {
 
   implicit val questionFormat = Json.format[Question]
   case class Question(category: String, question: String, answer: String, tags: Set[String] = Set.empty, link: String = "", used: Boolean = false)
-  
+
   implicit val gameFormat = Json.format[GameInitializer]
   case class GameInitializer(questions: List[Question], categories: Set[String], tags: Set[String])
-  
-  
+
+  def test = Action {
+    Ok(Json.toJson("ok"))
+  }
+
   def index = Action {
     Ok(views.html.index("Hello world!"))
   }
@@ -35,7 +38,6 @@ object Application extends Controller {
     Ok(Json.toJson(everything))
   }
 
-  
   /**
    * Returns all questions by e.g:
    * http://localhost:9000/questions
