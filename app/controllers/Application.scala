@@ -15,10 +15,6 @@ object Application extends Controller {
   implicit val gameFormat = Json.format[GameInitializer]
   case class GameInitializer(questions: List[Question], categories: Set[String], tags: Set[String])
 
-  def test = Action {
-    Ok(Json.toJson("ok"))
-  }
-
   def index = Action {
     Ok(views.html.index("Hello world!"))
   }
