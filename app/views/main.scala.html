@@ -17,11 +17,11 @@
 	</head>
 	<body>
 		<div id="game">
-			<div id="header">
-				<img id="logo" src=@routes.Assets.at("images/logo.gif")>
-				<h1>Erborigien Pursuit</h1>
-			</div>
-			<div id="main" class="container clear-top">				
+			<div id="main" class="container clear-top">	
+				<div id="header">
+					<img id="logo" src=@routes.Assets.at("images/logo.gif")>
+					<h1>Erborigien Pursuit</h1>
+				</div>		
 				<div id="cards">
 					<div id="question" class="panel">
 						<div class="panel-heading">
@@ -52,12 +52,12 @@
 					</div>
 				</div>
 				<div id="controls">
-					<p id="categories">
+					<div id="categories">
 						<div id="category-list" class="btn-group btn-group-lg">
 						</div>
-					</p>
-					<p id="options">
-						<div class="btn-group btn-group-lg">
+					</div>
+					<div id="options">
+						<div id="option-buttons" class="btn-group btn-group-lg">
 							<button id="random" type="button" class="btn btn-default">
 								<span class="glyphicon glyphicon-question-sign"></span>
 							</button>
@@ -71,35 +71,35 @@
 								<span class="glyphicon glyphicon-info-sign"></span>
 							</button>
 						</div>	
-					</p>
-				</div>
-				<div id="options">
-					<div id="info" class="panel panel-default">
-						<div class="panel-heading">
-							Om spelet
-						</div>
-						<div class="panel-body">
-							<div>
-								Det här är ett mysigt litet frågespel från föreningen <a href="http://gyllenehjorten.se">Gyllene Hjorten</a>.
+						<div id="option-cards">
+							<div id="info" class="panel panel-default">
+								<div class="panel-heading">
+									Om spelet
+								</div>
+								<div class="panel-body">
+									<div>
+										Det här är ett mysigt litet frågespel från föreningen <a href="http://gyllenehjorten.se">Gyllene Hjorten</a>.
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-					<div id="tags" class="panel panel-default">
-						<div class="panel-heading">
-							Taggar
-						</div>
-						<div class="panel-body" data-toggle="buttons">
-							<div id="tag-list">
-								<button type="button" id="alltags" class="btn btn-default active"/>Alla</button>
+							<div id="tags" class="panel panel-default">
+								<div class="panel-heading">
+									Taggar
+								</div>
+								<div class="panel-body" data-toggle="buttons">
+									<div id="tag-list">
+										<button type="button" id="alltags" class="btn btn-default active"/>Alla</button>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-					<div id="difficulty" class="panel panel-default">
-						<div class="panel-heading">
-							Svårighetsgrad
-						</div>
-						<div class="panel-body">
-							<div>Denna funktion är inte implementerad än.</div>
+							<div id="difficulty" class="panel panel-default">
+								<div class="panel-heading">
+									Svårighetsgrad
+								</div>
+								<div class="panel-body">
+									<div>Denna funktion är inte implementerad än.</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

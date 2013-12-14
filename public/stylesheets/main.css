@@ -17,7 +17,7 @@ html, body {
 
 #main {
   overflow: auto;
-  padding-bottom: 30px; 
+  padding-bottom: 50px; 
  }
 
 #footer {
@@ -36,6 +36,7 @@ html, body {
 
 #logo {
 	padding-top: 4px;
+	margin-left:6px;
 	float: left;
 	width: 70px;
 	opacity: 0.8;
@@ -48,20 +49,22 @@ h1 {
 }
 
 .panel {
-	transition: transform 1s;
 	margin-left: 10px;
 	margin-right: 10px;
 	display: none;
+}
+
+#cards .panel {
 	box-shadow: 3px 3px 6px 2px #ccc !important;
 }
 
-.panel-body {
+#cards .panel-body {
 	height: 160px;
 	display: table;	
 	width: 100%;
 }
 
-.panel-body div {
+#cards .panel-body div {
 	margin: 0px;
 	padding: 0px;
 	display: table-cell;
@@ -88,6 +91,32 @@ h1 {
 
 #controls {
 	visibility: hidden;
+}
+
+#options {
+	margin-top: 15px;	
+}
+
+#options .open {
+	background-color: #f5f5f5;
+	border-bottom-color: #f5f5f5;
+}
+
+#option-buttons.open-card .btn:first-child {
+	border-bottom-left-radius: 0px;
+}
+
+#option-buttons.open-card .btn:last-child {
+	border-bottom-right-radius: 0px;
+}
+
+#option-buttons {
+	z-index: 2;
+}
+
+#option-cards {
+	position: relative;
+	top: -1px;
 }
 
 #footer {

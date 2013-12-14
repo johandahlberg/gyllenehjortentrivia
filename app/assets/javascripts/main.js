@@ -38,9 +38,9 @@ $(function() {
 			
 			//Evenhandler för diverse knappar.
 			$("#random").click(function() { newQuestion(-1); });
-			$("#showtags").click(function() { toggleOptionCard("tags"); });
-			$("#showinfo").click(function() { toggleOptionCard("info"); });
-			$("#showdifficulty").click(function() { toggleOptionCard("difficulty"); });
+			$("#showtags").click(function() { toggleOptionCard("tags", this); });
+			$("#showinfo").click(function() { toggleOptionCard("info", this); });
+			$("#showdifficulty").click(function() { toggleOptionCard("difficulty", this); });
 			$("#question").click(function() { changeCard("answer"); });
 			$("#answer").click(function() { changeCard("question"); });
 			
@@ -217,18 +217,23 @@ function changeCard(strCard) {
 	
 }
 
-function toggleOptionCard(strCard) {
+function toggleOptionCard(strCard, objButton) {
 	
 	//Dölj kortet om det är öppet.
 	if($("#" + strCard).css("display") == "block") {
 		$("#" + strCard).css("display", "none");	
+		$(objButton).removeClass("open");
+		$("#option-buttons").removeClass("open-card");
 	}
 	else {
 		//Dölj alla kort.
-		$("#options .panel").css("display", "none");
+		$("#option-cards .panel").css("display", "none");
+		$("#options .open").removeClass("open");
 		
 		//Visa det nya kortet.
 		$("#" + strCard).css("display", "block");
+		$(objButton).addClass("open");
+		$("#option-buttons").addClass("open-card");
 	}
 	
 }
