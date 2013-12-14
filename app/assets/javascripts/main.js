@@ -2,8 +2,6 @@ var JSON_URL = "initalizegame";
 var GH_DOKI_URL = "http://gyllenehjorten.se/dokuwiki/doku.php?id=";
 
 var strCurrentCard = "message";
-var strOldCard;
-var blnOpenCard = false;
 
 var strTags;
 var strCategories;
@@ -39,11 +37,10 @@ $(function() {
 			$("#alltags").click(checkAllTags);
 			
 			//Evenhandler för diverse knappar.
-			$(".close").click(closeCard);
 			$("#random").click(function() { newQuestion(-1); });
-			$("#showtags").click(function() { openCard("tags"); });
-			$("#showinfo").click(function() { openCard("info"); });
-			$("#showdifficulty").click(function() { openCard("difficulty"); });
+			$("#showtags").click(function() { toggleOptionCard("tags"); });
+			$("#showinfo").click(function() { toggleOptionCard("info"); });
+			$("#showdifficulty").click(function() { toggleOptionCard("difficulty"); });
 			$("#question").click(function() { changeCard("answer"); });
 			$("#answer").click(function() { changeCard("question"); });
 			
@@ -211,39 +208,28 @@ function allPanelClasses() {
 
 function changeCard(strCard) {
 	
-	//Göm det nuvarande kortet (om det finns)
-	if(strCurrentCard != "") {
-		$("#" + strCurrentCard).css("display", "none");
-	}
+	//Dölj alla kort.
+	$("#cards .panel").css("display", "none");
+	console.log($("#cards .panel").size());
 	
 	//Visa det nya kortet.
 	$("#" + strCard).css("display", "block");
 	
-	//Kom ihåg vilket kort vi är på.
-	strCurrentCard = strCard;
-	
-	//Vi har inte längre ett öppet kort.
-	blnOpenCard = false;
-	
 }
 
-function openCard(strCard) {
+function toggleOptionCard(strCard) {
 	
-	//Om det inte redan är ett öppet kort ska vi byta tillbaka till nuvarande.
-	if(!blnOpenCard)
-		strOldCard = strCurrentCard;
-	
-	//Byt kort och kom ihåg att det är ett öppnat.
-	changeCard(strCard);
-	blnOpenCard = true;
-	
-}
-
-function closeCard() {
-	
-	//Stäng kortet om något kort är öppet.
-	if(blnOpenCard)
-		changeCard(strOldCard);
+	//Dölj kortet om det är öppet.
+	if($("#" + strCard).css("display") == "block") {
+		$("#" + strCard).css("display", "none");	
+	}
+	else {
+		//Dölj alla kort.
+		$("#options .panel").css("display", "none");
+		
+		//Visa det nya kortet.
+		$("#" + strCard).css("display", "block");
+	}
 	
 }
 
