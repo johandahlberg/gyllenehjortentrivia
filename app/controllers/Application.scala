@@ -5,6 +5,7 @@ import play.api.mvc._
 import java.net.URL
 import scala.util.Random
 import play.api.libs.json.Json
+import scala.io.Codec
 
 object Application extends Controller {
 
@@ -77,8 +78,8 @@ object Application extends Controller {
 
   def getSpreadSheets(): List[String] = {
 
-    val sheet = scala.io.Source.fromURL(
-      new URL("https://docs.google.com/spreadsheet/pub?key=0AgX8h-A0AgGIdGNMY1d4cjJNY2VTVFZIYmhrcGtJZUE&single=true&gid=1&output=txt")).getLines
+    val sheet = (scala.io.Source.fromURL(
+      new URL("https://docs.google.com/spreadsheet/pub?key=0AgX8h-A0AgGIdGNMY1d4cjJNY2VTVFZIYmhrcGtJZUE&single=true&gid=1&output=txt"))(Codec.UTF8)).getLines
 
     // Hack solution to demand values in each required field
     // Also skips the header by using tail  
