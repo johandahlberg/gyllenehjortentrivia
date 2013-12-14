@@ -5,16 +5,16 @@ import play.api.mvc._
 import java.net.URL
 import scala.util.Random
 import play.api.libs.json.Json
+import scala.io.Codec
 
 object Application extends Controller {
 
   implicit val questionFormat = Json.format[Question]
   case class Question(category: String, question: String, answer: String, tags: Set[String] = Set.empty, link: String = "", used: Boolean = false)
-  
+
   implicit val gameFormat = Json.format[GameInitializer]
   case class GameInitializer(questions: List[Question], categories: Set[String], tags: Set[String])
-  
-  
+
   def index = Action {
     Ok(views.html.index("Hello world!"))
   }
@@ -35,7 +35,6 @@ object Application extends Controller {
     Ok(Json.toJson(everything))
   }
 
-  
   /**
    * Returns all questions by e.g:
    * http://localhost:9000/questions
@@ -75,8 +74,8 @@ object Application extends Controller {
 
   def getSpreadSheets(): List[String] = {
 
-    val sheet = scala.io.Source.fromURL(
-      new URL("https://docs.google.com/spreadsheet/pub?key=0AgX8h-A0AgGIdGNMY1d4cjJNY2VTVFZIYmhrcGtJZUE&single=true&gid=1&output=txt")).getLines
+    val sheet = (scala.io.Source.fromURL(
+      new URL("https://docs.google.com/spreadsheet/pub?key=0AgX8h-A0AgGIdGNMY1d4cjJNY2VTVFZIYmhrcGtJZUE&single=true&gid=1&output=txt"))(Codec.UTF8)).getLines
 
     // Hack solution to demand values in each required field
     // Also skips the header by using tail  
