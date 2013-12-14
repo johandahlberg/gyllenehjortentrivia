@@ -24,6 +24,9 @@ $(function() {
 			strCategories = data.categories;
 			objQuestions = data.questions;
 			
+			//Blanda korten.
+			shuffleArray(objQuestions);
+			
 			//Skriv ut kategorierna, och gör dem klickbara.
 			$("#category-list").append(categoryList());
 			$(".category").click(function() { newQuestion($(this).attr("name")); });
@@ -59,6 +62,21 @@ $(function() {
 		});
 
 });
+
+function shuffleArray(a) {
+
+	var j, t;
+
+	//Fisher-Yates
+	for(var i=a.length-1; i>0; i--) {
+		j = Math.floor(Math.random() * i);
+		t = a[i];
+		a[i] = a[j];
+		a[j] = t;	
+	}
+		
+	
+}
 
 function categoryList() {
 	
