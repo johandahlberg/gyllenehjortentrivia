@@ -10,7 +10,7 @@ html, body {
 
 #game {
 	min-height: 100%; 
-	max-width: 400px;
+	max-width: 320px;
 	margin: 0px auto 0px auto;
 	padding: 0px;
 }
@@ -26,12 +26,25 @@ html, body {
   height: 40px;
   clear: both;
   padding: 0px;
-} 
+}
+
+#header {
+	margin-left: auto;
+	margin-right: auto;
+	width: 300px !important;	
+}
+
+#logo {
+	padding-top: 4px;
+	float: left;
+	width: 70px;
+	opacity: 0.8;
+}
 
 h1 {
-	color: #433 !important;
-	text-shadow: 3px 3px #ccc;	
 	margin-top: 10px !important;
+	font-family: 'Abril Fatface', serif;
+    font-size: 40px;	
 }
 
 .panel {

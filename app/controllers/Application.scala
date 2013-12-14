@@ -31,7 +31,7 @@ object Application extends Controller {
   case class GameInitializer(questions: List[Question], categories: List[String], tags: List[String])
 
   def index = Action {
-    Ok(views.html.index("Hello world!"))
+    Ok(views.html.index())
   }
 
   def getQuestionsFromSpreadsheet(spreadsheet: List[String]): List[Question] = {

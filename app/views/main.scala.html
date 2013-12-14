@@ -1,23 +1,27 @@
 @* main Template File *@
-@(param: Any)
+@()
 
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-		<meta name="viewport" content="width=420, initial-scale=1"/>
-		<title>Gyllene Hjorten: Frågespel</title>
+		<meta name="viewport" content="width=320, initial-scale=1"/>
+		<title>Erborigien Pursuit</title>
 		<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")"></script>
 		<script src="@routes.Assets.at("javascripts/button.js")"></script>
-		<script src="@routes.Assets.at("javascripts/main.js")"></script>
+		<script src="@routes.Assets.at("javascripts/main.js")"></script>		
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")"/>
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.custom.css")"/>
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Abril+Fatface">
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")"/>		
 	</head>
 	<body>
 		<div id="game">
-			<div id="main" class="container clear-top">
-				<!--<h1 id="header">Erborigisk Trivia</h1>-->
+			<div id="header">
+				<img id="logo" src=@routes.Assets.at("images/logo.gif")>
+				<h1>Erborigien Pursuit</h1>
+			</div>
+			<div id="main" class="container clear-top">				
 				<p id="cards">
 					<div id="question" class="panel">
 						<div class="panel-heading">
