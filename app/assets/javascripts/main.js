@@ -106,14 +106,24 @@ function tagList() {
 function newQuestion(intCategory) {
 	
 	//Om vi ska slumpa en fråga.
-	if(intCategory < 0)
+	if(intCategory < 0) {
 		intCategory = Math.floor(Math.random()*strCategories.length);
+		for(var i=0; i<strCategories.length; i++) {
+			intCategory = (intCategory + 1) % strCategories.length;
+			strCategory = strCategories[intCategory];
+			objQuestion = getUnusedQuestion(strCategory)
+			if(objQuestion != null) break;
+		}
+	}
+	else {
 		
-	//Hämta namnet på kategorin.
-	strCategory = strCategories[intCategory];
+		//Hämta namnet på kategorin.
+		strCategory = strCategories[intCategory];
+		
+		//Hitta en ny fråga som inte tagits och som är av rätt kategori.
+		objQuestion = getUnusedQuestion(strCategory);
 	
-	//Hitta en ny fråga som inte tagits och som är av rätt kategori.
-	objQuestion = getUnusedQuestion(strCategory);
+	}
 	
 	if(objQuestion == null) {
 
